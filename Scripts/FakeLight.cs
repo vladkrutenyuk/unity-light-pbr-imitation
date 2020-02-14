@@ -18,7 +18,6 @@ public class FakeLight : MonoBehaviour
     
     private void Start()
     {
-
         ApplySun();
     }
 
@@ -44,7 +43,6 @@ public class FakeLight : MonoBehaviour
         Shader.SetGlobalFloat("_ShadowContrast", shadowContrast);
         Shader.SetGlobalTexture("_SkyBox", skyBox);
         Shader.SetGlobalColor("_ShadowColor", shadowColor);
-           
     }
 
     public Color SunColor(int t)
