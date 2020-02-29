@@ -1,4 +1,4 @@
-﻿Shader "KVY/Lit PBR Imitation"
+﻿Shader "KVY/Lit PBR Imitation Transparent"
 {
     Properties
     {
@@ -15,8 +15,18 @@
 
         [Toggle(USE_CUSTOM_SKY)] _UseCustomSky("Use custom sky", Int) = 0
     }
+
     SubShader
     {   
+        Tags
+        {
+            "RenderType" = "Trasnparent"
+            "Queue" = "Transparent"
+        }
+
+        Blend SrcAlpha OneMinusSrcAlpha
+        ZWrite off
+
         Pass
         {
             CGPROGRAM 
@@ -67,7 +77,7 @@
                 return o;
             }
 
-            fixed3 frag(v2f i) : SV_TARGET
+            fixed4 frag(v2f i) : SV_TARGET
             {
                 half3 tangentNormal = UnpackNormal(tex2D(_BumpMap, i.uv));
                 i.worldNormal = half3
@@ -88,7 +98,8 @@
                 _Roughness *= tex2D(_RoughnessMap, i.uv);
                 _Metalness *= tex2D(_MetalnessMap, i.uv);
 
-                fixed3 col = _Color * tex2D(_MainTex, i.uv);
+                fixed4 tex = tex2D(_MainTex, i.uv);
+                fixed3 col = _Color * tex.rgb;
                 fixed3 lightData = dot(normalize(i.worldNormal), normalize(_Sun));
                 lightData = contrast(lightData, _ShadowContrast) * _SunIntensity;
                 fixed3 light = lerp(_ShadowColor, _SunColor, lightData);
@@ -106,7 +117,7 @@
                 col *= lerp(1, tex2D(_AOMap, i.uv), _AOIntensity);
                 col += tex2D(_EmissiveMap, i.uv);
 
-                return col;
+                return fixed4(col, tex.a);
             }
             ENDCG
         }
