@@ -54,10 +54,6 @@ public class FakeLightEditor : Editor
 
         EditorGUILayout.PropertyField(temperature);
 
-        
-
-        GUI.DrawTexture(new Rect(10, 100, 60, 60), aTexture, ScaleMode.StretchToFill, true, 10.0F);
-
         EditorGUILayout.Space(10);
 
         EditorGUILayout.PropertyField(intensity);
@@ -81,11 +77,13 @@ public class FakeLightEditor : Editor
         EditorGUILayout.LabelField("SKY", EditorStyles.toolbarButton);
         EditorGUILayout.Space(4);
 
+        EditorGUILayout.HelpBox("Set toggle 'Use custom sky' in materials to enable your skybox", MessageType.Info);
+
         EditorGUILayout.PropertyField(skyBox);
 
         EditorGUILayout.Space(20);
         EditorGUILayout.HelpBox(
-            "Make sure the materials of your objects have shader: 'KVY/Fake Lit PBR'", MessageType.Info);
+            "Make sure the materials of your objects have such shaders as: KVY/Lit PBR Imitation, KVY/Lit PBR Imitation Transparent", MessageType.Info);
 
         serializedObject.ApplyModifiedProperties();
     }
@@ -94,7 +92,6 @@ public class FakeLightEditor : Editor
     {
         if(value > from && value <= to)
         {
-            // EditorGUILayout.РудзИщ("A.W.E.S.O.M.-O 4000 сообщает:");
             EditorGUILayout.HelpBox(then, type);
         }
     }
